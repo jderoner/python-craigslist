@@ -409,11 +409,11 @@ class CraigslistHousing(CraigslistBase):
         if bedsqft:
             if '-' in bedsqft.text:
                 bedsqft = row.find('span', {'class': 'housing'}).text.split('-')
-                result.beds = bedsqft[0].strip().replace('br','')
-                result.sqft = bedsqft[1].strip().replace('ft2','')
+                result[ "beds" ] = bedsqft[0].strip().replace('br','')
+                result[ "sqft" ] = bedsqft[1].strip().replace('ft2','')
             else:
-                result.beds = None
-                result.sqft = None
+                result[ "beds" ] = None
+                result[ "sqft" ] = None
 
 
 class CraigslistJobs(CraigslistBase):
