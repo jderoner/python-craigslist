@@ -384,6 +384,7 @@ class CraigslistHousing(CraigslistBase):
     """ Craigslist housing wrapper. """
 
     default_category = 'hhh'
+    custom_result_fields = True
 
     extra_filters = {
         'private_room': {'url_key': 'private_room', 'value': 1},
