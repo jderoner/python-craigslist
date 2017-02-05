@@ -222,8 +222,6 @@ class CraigslistBase(object):
                           'price': price.text if price else None,
                           'where': where,
                           'has_image': 'pic' in tags,
-                          'beds': beds,
-                          'sqft': sqft,
                           'thumbnail' : thumbnail,
                           # TODO: Look into this, looks like all shwo map now
                           'has_map': 'map' in tags,

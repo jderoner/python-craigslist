@@ -15,7 +15,7 @@ with open('README.rst', 'r') as r:
     readme = r.read()
 
 download_url = (
-    'https://github.com/juliomalegria/python-craigslist/tarball/%s'
+    'https://github.com/jderoner/python-craigslist/tarball/%s'
 )
 
 
@@ -27,7 +27,7 @@ setup(
     long_description=readme,
     author='Julio M Alegria',
     author_email='juliomalegria@gmail.com',
-    url='https://github.com/juliomalegria/python-craigslist',
+    url='https://github.com/jderoner/python-craigslist',
     download_url=download_url % version,
     install_requires=requires,
     license='MIT-Zero'
