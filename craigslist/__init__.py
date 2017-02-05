@@ -404,7 +404,7 @@ class CraigslistHousing(CraigslistBase):
         'wheelchair_acccess': {'url_key': 'wheelchaccess', 'value': 1},
     }
 
-    def customize_result(self, result, html_row):
+    def customize_result(self, result, row):
         bedsqft = row.find('span', {'class': 'housing'})
         if bedsqft:
             if '-' in bedsqft.text:
