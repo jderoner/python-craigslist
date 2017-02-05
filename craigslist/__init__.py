@@ -180,7 +180,7 @@ class CraigslistBase(object):
                 totalcount = soup.find('span', {'class': 'totalcount'})
                 total = int(totalcount.text) if totalcount else 0
 
-            for row in soup.find_all('p', {'class': 'result-info'}):
+            for row in soup.find_all('li', {'class': 'result-row'}):
                 if limit is not None and total_so_far >= limit:
                     break
                 self.logger.debug('Processing %s of %s results ...',
@@ -203,6 +203,17 @@ class CraigslistBase(object):
                     where = where.text.strip()[1:-1]  # remove ()
                 tags_span = row.find('span', {'class': 'result-tags'})
                 tags = tags_span.text if tags_span else ''
+                
+                thumbnail = ""
+                image_row = row.find('a', {'class': 'result-image'})
+                img = image_row.get('data-ids') # Take that Craig!
+                
+                if img is None:
+                    thumbnail = None
+                else:
+                    img = str(img)[2:19] # eats up the first image ID
+                    img = img.replace(',', '')
+                    thumbnail = "https://images.craigslist.org/" + img + "_300x300.jpg" # this took me forever
 
                 result = {'id': id,
                           'name': name,
@@ -211,6 +222,9 @@ class CraigslistBase(object):
                           'price': price.text if price else None,
                           'where': where,
                           'has_image': 'pic' in tags,
+                          'beds': beds,
+                          'sqft': sqft,
+                          'thumbnail' : thumbnail,
                           # TODO: Look into this, looks like all shwo map now
                           'has_map': 'map' in tags,
                           'geotag': None}
@@ -390,6 +404,17 @@ class CraigslistHousing(CraigslistBase):
         'is_furnished': {'url_key': 'is_furnished', 'value': 1},
         'wheelchair_acccess': {'url_key': 'wheelchaccess', 'value': 1},
     }
+
+    def customize_result(self, result, html_row):
+        bedsqft = row.find('span', {'class': 'housing'})
+        if bedsqft:
+            if '-' in bedsqft.text:
+                bedsqft = row.find('span', {'class': 'housing'}).text.split('-')
+                result.beds = bedsqft[0].strip().replace('br','')
+                result.sqft = bedsqft[1].strip().replace('ft2','')
+            else:
+                result.beds = None
+                result.sqft = None
 
 
 class CraigslistJobs(CraigslistBase):
